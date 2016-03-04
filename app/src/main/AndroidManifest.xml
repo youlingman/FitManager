@@ -1,0 +1,65 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cyl.fitmanager"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <application
+        android:name=".Appcontext.MainApplication"
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activity.SquatsMainActivity"
+            android:label="SquatsMainActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+
+        <activity
+            android:name=".Activity.PushUpMainActivity"
+            android:label="PushUpMainActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+
+        <activity
+            android:name=".Activity.SitUpMainActivity"
+            android:label="SitUpMainActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+
+        <activity
+            android:name=".Activity.ProgramMainActivity"
+            android:label="ProgramMainActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+
+        <service android:name=".Service.NotifyService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":notify" >
+        </service>
+
+        <receiver android:name=".Receiver.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".Receiver.AlarmReceiver">
+        </receiver>
+    </application>
+
+</manifest>
