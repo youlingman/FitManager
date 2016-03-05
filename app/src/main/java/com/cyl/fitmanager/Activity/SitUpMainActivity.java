@@ -20,12 +20,10 @@ public class SitUpMainActivity extends TrainingBaseActivity implements SensorEve
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private Sensor mMagnetic;
-    final private int DOWN_THRESHOLE = -120;
-    final private int UP_THRESHOLE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(savedInstanceState);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

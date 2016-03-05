@@ -25,7 +25,8 @@
         <activity
             android:name=".Activity.SquatsMainActivity"
             android:label="SquatsMainActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar">
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="landscape">
         </activity>
 
         <activity
@@ -37,7 +38,8 @@
         <activity
             android:name=".Activity.SitUpMainActivity"
             android:label="SitUpMainActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="landscape">
         </activity>
 
         <activity

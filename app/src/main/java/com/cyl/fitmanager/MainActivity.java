@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.cyl.fitmanager.Appcontext.MainApplication;
 import com.cyl.fitmanager.Activity.ProgramMainActivity;
 import com.cyl.fitmanager.Data.GroupProp;
+import com.cyl.fitmanager.Receiver.AlarmReceiver;
 import com.snappydb.SnappydbException;
 
 import java.util.ArrayList;
@@ -26,11 +27,13 @@ import java.util.List;
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     private ListView lvEntry;
+    private AlarmReceiver alarm = new AlarmReceiver();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MainApplication) getApplication()).updateTrainingDay();
+        alarm.setAlarm(this);
         setContentView(R.layout.activity_main);
         initData();
         initListView();

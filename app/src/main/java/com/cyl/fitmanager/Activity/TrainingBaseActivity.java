@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,8 +39,11 @@ public class TrainingBaseActivity extends Activity {
     private static final String TAG = "TrainingBaseActivity";
     String program;
     String style;
+    AudioManager audio;
     SoundPool soundPool;
-    int singleSoundID;
+    int singleSound;
+    int notifySound;
+    int finishSound;
     Date startDate;
     // 布局view
     TextView tv_program;
@@ -65,6 +69,7 @@ public class TrainingBaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_training_base);
         initData();
         initView();
@@ -82,9 +87,14 @@ public class TrainingBaseActivity extends Activity {
         groupProp = bundle.getParcelable("group");
         if (null == groupProp) groupProp = new GroupProp();
         count = groupProp.count;
-        soundPool = new SoundPool(5, AudioManager.STREAM_SYSTEM, 0);
-        singleSoundID = soundPool.load(this.getApplicationContext(), R.raw.shrink, 1);
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        singleSound = soundPool.load(this.getApplicationContext(), R.raw.finish_single, 1);
+        notifySound = soundPool.load(this.getApplicationContext(), R.raw.countdown_notify, 1);
+        finishSound = soundPool.load(this.getApplicationContext(), R.raw.finish_all_group, 1);
         startDate = new Date();
+        audio = (AudioManager) getSystemService(AUDIO_SERVICE);
+//        audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 1);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
     /**
@@ -233,6 +243,8 @@ public class TrainingBaseActivity extends Activity {
      * 响应放弃当前训练事件
      */
     void onTrainingQuit() {
+        final int previousState = trainingState;
+        trainingState = UNAVAILABLE;
         AlertDialog.Builder builder = new AlertDialog.Builder(TrainingBaseActivity.this);
         builder.setMessage("是否退出训练？将丢失当前训练进度。");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -245,6 +257,7 @@ public class TrainingBaseActivity extends Activity {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                trainingState = previousState;
                 dialog.dismiss();
             }
         });
@@ -264,7 +277,8 @@ public class TrainingBaseActivity extends Activity {
             finishedCount += (groupProp.size * groupProp.count);
             count = 0;
             style = getString(R.string.free_style);
-            onFreeStylePageShow("本日训练计划已完成！");
+            onFreeStylePageShow(getString(R.string.finish_today));
+            soundPool.play(finishSound, 1, 1, 0, 0, 1);
         }
         // 未完成所有组
         else {
@@ -282,7 +296,7 @@ public class TrainingBaseActivity extends Activity {
             count--;
         }
         tv_counting.setText("" + count);
-        soundPool.play(singleSoundID, 1, 1, 0, 0, 1);
+        soundPool.play(singleSound, 1, 1, 0, 0, 1);
     }
 
     /**
@@ -293,7 +307,7 @@ public class TrainingBaseActivity extends Activity {
         tv_counting.setText("" + count);
         tv_program.setVisibility(View.VISIBLE);
         tv_todo.setVisibility(View.VISIBLE);
-        tv_todo.setText("已完成");
+        tv_todo.setText(text);
         tv_rest.setVisibility(View.GONE);
         // 页面底部按钮
         bt_quit.setVisibility(View.GONE);
@@ -394,7 +408,10 @@ public class TrainingBaseActivity extends Activity {
             String sMinutes = minutes >= 10 ? "" + minutes : "0" + minutes;
             String sSeconds = seconds >= 10 ? "" + seconds : "0" + seconds;
             tv_counting.setText(sMinutes + ":" + sSeconds);
-        }
+            if(1 == speed && 0 == minutes && 3 == seconds) {
+                soundPool.play(notifySound, 1, 1, 0, 0, 1);
+            }
+         }
 
         @Override
         public void onFinish() {
@@ -403,7 +420,7 @@ public class TrainingBaseActivity extends Activity {
             } else if (style.equals(getString(R.string.free_style))) {
                 count = 0;
                 trainingState = INIT;
-                onFreeStylePageShow("已完成");
+                onFreeStylePageShow(getString(R.string.finished));
             } else if (style.equals(getString(R.string.program_style))) {
                 count = groupProp.count;
                 trainingState = INIT;

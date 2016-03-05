@@ -79,6 +79,7 @@ public class ProgramMainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        refreshTrainingDay();
         refreshChart();
     }
 
@@ -334,11 +335,13 @@ public class ProgramMainActivity extends Activity {
         tv_nextTrainingDay.setText(training_day);
         // TODO 下一训练日为当日，开放训练入口
         if(today.equals(training_day)) {
-
+            btn_program_style.setClickable(true);
+            btn_program_style.setAlpha(1f);
         }
         // TODO 关闭训练入口
         else {
-
+            btn_program_style.setClickable(false);
+            btn_program_style.setAlpha(.5f);
         }
     }
 
