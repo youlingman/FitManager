@@ -93,9 +93,8 @@ public class ProgramMainActivity extends Activity {
         // 获取当月首日日期
         trainingMonthDate = firstDayOfMonth();
         // 获取训练计划数据
-        try {
-            groupProp = ((MainApplication) getApplication()).getDB().getObject(program + "_group", GroupProp.class);
-        } catch (SnappydbException e) {
+        groupProp = ((MainApplication) getApplication()).getObjInSp(program + "_group", GroupProp.class);
+        if(null == groupProp) {
             groupProp = new GroupProp();
         }
         // 获取训练月份数组数据
@@ -183,11 +182,7 @@ public class ProgramMainActivity extends Activity {
                         } else {
                             v.setBackgroundResource(R.drawable.btn_training_day_unselected);
                         }
-                        try {
-                            ((MainApplication) getApplication()).getDB().put(program + "_group", groupProp);
-                        } catch (SnappydbException e) {
-                            e.printStackTrace();
-                        }
+                        ((MainApplication) getApplication()).putObjInSp(program + "_group", groupProp);
                     }
                     refreshTrainingDay();
                 }
@@ -242,7 +237,7 @@ public class ProgramMainActivity extends Activity {
      */
     void startTraining(Intent intent) {
         boolean no_tip = ((MainApplication) getApplication()).getSP().getBoolean(program + "_no_tip", false);
-        if (no_tip == true) {
+        if (no_tip) {
             startActivity(intent);
         } else {
             new TipDialog(this, R.style.dialog, intent).show();
@@ -352,11 +347,7 @@ public class ProgramMainActivity extends Activity {
         groupProp.size = Integer.parseInt(tv_group_size.getText().toString());
         groupProp.count = Integer.parseInt(tv_group_count.getText().toString());
         groupProp.interval = Integer.parseInt(tv_group_interval.getText().toString());
-        try {
-            ((MainApplication) getApplication()).getDB().put(program + "_group", groupProp);
-        } catch (SnappydbException e) {
-            e.printStackTrace();
-        }
+        ((MainApplication) getApplication()).putObjInSp(program + "_group", groupProp);
     }
 
     /**

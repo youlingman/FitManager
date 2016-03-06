@@ -15,7 +15,7 @@ import java.util.Calendar;
  * 每天9:00和21:00定时启动{@link NotifyService}
  * Created by Administrator on 2016-2-26.
  */
-public class AlarmReceiver  extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
 
@@ -27,13 +27,14 @@ public class AlarmReceiver  extends BroadcastReceiver {
 
     /**
      * set the alarm
+     *
      * @param context
      */
     public void setAlarm(Context context) {
-        alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent mIntent = new Intent(context, AlarmReceiver.class);
-        if(PendingIntent.getBroadcast(context, 0, mIntent, PendingIntent.FLAG_NO_CREATE) == null) {
-//            Log.e("fitmanager", "set alarm");
+        if (PendingIntent.getBroadcast(context, 0, mIntent, PendingIntent.FLAG_NO_CREATE) == null) {
+            Log.e("fitmanager", "set alarm");
             alarmIntent = PendingIntent.getBroadcast(context, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
@@ -46,6 +47,7 @@ public class AlarmReceiver  extends BroadcastReceiver {
 
     /**
      * cancel the alarm
+     *
      * @param context
      */
     public void cancelAlarm(Context context) {

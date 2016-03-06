@@ -25,4 +25,5 @@ dependencies {
     compile files('libs/mpandroidchartlibrary-2-1-6.jar')
     compile 'com.snappydb:snappydb-lib:0.5.2'
     compile 'com.esotericsoftware.kryo:kryo:2.24.0'
+    compile 'com.alibaba:fastjson:1.2.8'
 }

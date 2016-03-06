@@ -2,14 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/entry_item"
+    <LinearLayout
+        android:id="@+id/entry_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:background="@drawable/listitem_main_selector"
-        android:textColor="@color/gray"
-        android:textSize="12pt" />
+        android:background="@drawable/listitem_main_finished_selector"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/entry_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="12pt" />
+    </LinearLayout>
 </LinearLayout>

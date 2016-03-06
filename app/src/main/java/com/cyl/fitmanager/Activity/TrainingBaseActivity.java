@@ -191,40 +191,43 @@ public class TrainingBaseActivity extends Activity {
             return;
         }
         Date date = new Date();
+        String today = parseDateInDay(date);
         // 更新训练用时
         long seconds = (date.getTime() - startDate.getTime()) / 1000;
         long current_seconds;
         try {
-            current_seconds = ((MainApplication) getApplication()).getDB().getLong(program + "_seconds_" + parseDateInDay(date));
+            current_seconds = ((MainApplication) getApplication()).getDB().getLong(program + "_seconds_" + today);
         } catch (SnappydbException e) {
             // not found in db
             current_seconds = 0;
         }
-//        Log.e("write seconds", program + "_seconds_" + parseDateInDay(date) + ": " + (current_seconds + seconds));
+//        Log.e("write seconds", program + "_seconds_" + today + ": " + (current_seconds + seconds));
         try {
             if ((current_seconds + seconds) != 0)
-                ((MainApplication) getApplication()).getDB().putLong(program + "_seconds_" + parseDateInDay(date), current_seconds + seconds);
+                ((MainApplication) getApplication()).getDB().putLong(program + "_seconds_" + today, current_seconds + seconds);
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
         // 更新训练统计
         int current_count;
         try {
-            current_count = ((MainApplication) getApplication()).getDB().getInt(program + "_free_count_" + parseDateInDay(date));
+            current_count = ((MainApplication) getApplication()).getDB().getInt(program + "_free_count_" + today);
         } catch (SnappydbException e) {
             // not found in db
             current_count = 0;
         }
-        Log.e("write count", program + "_program_count_" + parseDateInDay(date) + ": " + finishedCount);
-        Log.e("write count", program + "_free_count_" + parseDateInDay(date) + ": " + count + current_count);
+        Log.e("write count", program + "_program_count_" + today + ": " + finishedCount);
+        Log.e("write count", program + "_free_count_" + today + ": " + count + current_count);
         try {
             if (finishedCount != 0)
-                ((MainApplication) getApplication()).getDB().putInt(program + "_program_count_" + parseDateInDay(date), finishedCount);
+                ((MainApplication) getApplication()).getDB().putInt(program + "_program_count_" + today, finishedCount);
             if (count != 0)
-                ((MainApplication) getApplication()).getDB().putInt(program + "_free_count_" + parseDateInDay(date), count + current_count);
+                ((MainApplication) getApplication()).getDB().putInt(program + "_free_count_" + today, count + current_count);
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
+        // 更新上一训练日
+        ((MainApplication) getApplication()).getSP().edit().putString("last_training_day_" + program, today);
         // todo 弹一个对话框，展示本次训练完成情况，包括完成次数和所用时间
         new AlertDialog.Builder(this).
                 setTitle("本次训练").
@@ -245,23 +248,23 @@ public class TrainingBaseActivity extends Activity {
     void onTrainingQuit() {
         final int previousState = trainingState;
         trainingState = UNAVAILABLE;
-        AlertDialog.Builder builder = new AlertDialog.Builder(TrainingBaseActivity.this);
-        builder.setMessage("是否退出训练？将丢失当前训练进度。");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                trainingState = previousState;
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
+        new AlertDialog.Builder(TrainingBaseActivity.this)
+                .setMessage("是否退出训练？将丢失当前训练进度。")
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        trainingState = previousState;
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 
     /**
@@ -408,10 +411,10 @@ public class TrainingBaseActivity extends Activity {
             String sMinutes = minutes >= 10 ? "" + minutes : "0" + minutes;
             String sSeconds = seconds >= 10 ? "" + seconds : "0" + seconds;
             tv_counting.setText(sMinutes + ":" + sSeconds);
-            if(1 == speed && 0 == minutes && 3 == seconds) {
+            if (1 == speed && 0 == minutes && 3 == seconds) {
                 soundPool.play(notifySound, 1, 1, 0, 0, 1);
             }
-         }
+        }
 
         @Override
         public void onFinish() {
