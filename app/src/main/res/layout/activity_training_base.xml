@@ -58,18 +58,24 @@
     <Button
         android:id="@+id/quit_button"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_margin="3dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_normal_selector"
         android:text="退出"/>
     <Button
         android:id="@+id/reset_timer_button"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_margin="3dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_normal_selector"
         android:visibility="gone"
         android:text="马上开始"/>
     <Button
         android:id="@+id/finish_button"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_margin="3dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_normal_selector"
         android:visibility="gone"
         android:text="完成"/>
 </LinearLayout>
