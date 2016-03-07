@@ -11,11 +11,12 @@
         android:name=".Appcontext.MainApplication"
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,27 +26,27 @@
         <activity
             android:name=".Activity.SquatsMainActivity"
             android:label="SquatsMainActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:screenOrientation="landscape">
         </activity>
 
         <activity
             android:name=".Activity.PushUpMainActivity"
             android:label="PushUpMainActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
 
         <activity
             android:name=".Activity.SitUpMainActivity"
             android:label="SitUpMainActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:screenOrientation="landscape">
         </activity>
 
         <activity
             android:name=".Activity.ProgramMainActivity"
             android:label="ProgramMainActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
 
         <service android:name=".Service.NotifyService"

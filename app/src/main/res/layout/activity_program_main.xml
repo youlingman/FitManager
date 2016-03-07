@@ -171,6 +171,8 @@
                     android:background="@drawable/btn_training_day_unselected"
                     android:textSize="8dp"
                     android:layout_margin="5dp"
+                    android:minHeight="1dp"
+                    android:minWidth="1dp"
                     android:text="@string/monday"/>
                 <Button
                     android:id="@+id/training_day_2"
@@ -179,6 +181,8 @@
                     android:background="@drawable/btn_training_day_unselected"
                     android:textSize="8dp"
                     android:layout_margin="5dp"
+                    android:minHeight="1dp"
+                    android:minWidth="1dp"
                     android:text="@string/tuesday"/>
                 <Button
                     android:id="@+id/training_day_3"
@@ -187,6 +191,8 @@
                     android:background="@drawable/btn_training_day_unselected"
                     android:textSize="8dp"
                     android:layout_margin="5dp"
+                    android:minHeight="1dp"
+                    android:minWidth="1dp"
                     android:text="@string/wednesday"/>
                 <Button
                     android:id="@+id/training_day_4"
@@ -195,6 +201,8 @@
                     android:background="@drawable/btn_training_day_unselected"
                     android:textSize="8dp"
                     android:layout_margin="5dp"
+                    android:minHeight="1dp"
+                    android:minWidth="1dp"
                     android:text="@string/thursday"/>
             </LinearLayout>
             <LinearLayout
@@ -211,6 +219,8 @@
                     android:background="@drawable/btn_training_day_unselected"
                     android:layout_margin="5dp"
                     android:textSize="8dp"
+                    android:minHeight="1dp"
+                    android:minWidth="1dp"
                     android:text="@string/friday"/>
                 <Button
                     android:id="@+id/training_day_6"
@@ -219,6 +229,8 @@
                     android:background="@drawable/btn_training_day_unselected"
                     android:layout_margin="5dp"
                     android:textSize="8dp"
+                    android:minHeight="1dp"
+                    android:minWidth="1dp"
                     android:text="@string/saturday"/>
                 <Button
                     android:id="@+id/training_day_0"
@@ -227,6 +239,8 @@
                     android:background="@drawable/btn_training_day_unselected"
                     android:layout_margin="5dp"
                     android:textSize="8dp"
+                    android:minHeight="1dp"
+                    android:minWidth="1dp"
                     android:text="@string/sunday"/>
             </LinearLayout>
         </LinearLayout>

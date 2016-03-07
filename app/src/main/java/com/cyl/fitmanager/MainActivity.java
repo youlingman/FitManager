@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     private ListView lvEntry;
     private AlarmReceiver alarm = new AlarmReceiver();
+    private EntryListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initData();
         initListView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -55,11 +62,12 @@ public class MainActivity extends Activity {
                 ((MainApplication) getApplication()).putObjInSp(program + "_group", gp);
             }
         }
+        adapter = new EntryListAdapter();
     }
 
     private void initListView() {
         lvEntry = (ListView) findViewById(R.id.entry_list);
-        lvEntry.setAdapter(new EntryListAdapter());
+        lvEntry.setAdapter(adapter);
     }
 
     private static class ViewHolder {

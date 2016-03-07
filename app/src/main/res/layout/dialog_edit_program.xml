@@ -1,69 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/count_per_group"/>
+                android:text="@string/count_per_group" />
+
             <NumberPicker
                 android:id="@+id/group_count_picker"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </NumberPicker>
+                android:layout_height="wrap_content"></NumberPicker>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/group_size"/>
+                android:text="@string/group_size" />
+
             <NumberPicker
                 android:id="@+id/group_size_picker"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </NumberPicker>
+                android:layout_height="wrap_content"></NumberPicker>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/group_interval"/>
+                android:text="@string/group_interval" />
+
             <NumberPicker
                 android:id="@+id/group_interval_picker"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </NumberPicker>
+                android:layout_height="wrap_content"></NumberPicker>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

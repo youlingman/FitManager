@@ -429,16 +429,17 @@ public class ProgramMainActivity extends Activity {
             setNumberPiker(np_group_interval, tv_group_interval, group_interval_data);
         }
 
-        private void setNumberPiker(NumberPicker np, final TextView tv, final ArrayList<String> datas) {
-            np.setWrapSelectorWheel(true);
+        private void setNumberPiker(NumberPicker np, final TextView tv, final ArrayList<String> data) {
+//            np.setWrapSelectorWheel(true);
             np.setMinValue(0);
-            np.setMaxValue(datas.size() - 1);
-            np.setDisplayedValues(datas.toArray(new String[datas.size()]));
-            np.setValue(datas.indexOf(tv.getText().toString()));
+            np.setMaxValue(data.size() - 1);
+            np.setDisplayedValues(data.toArray(new String[data.size()]));
+            np.setWrapSelectorWheel(false);
+            np.setValue(data.indexOf(tv.getText().toString()));
             np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                 @Override
                 public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    tv.setText(datas.get(newVal));
+                    tv.setText(data.get(newVal));
                     updateGroup();
                 }
             });
