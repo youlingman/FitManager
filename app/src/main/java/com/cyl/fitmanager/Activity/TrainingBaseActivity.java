@@ -77,6 +77,16 @@ public class TrainingBaseActivity extends Activity {
         countDown(4);
     }
 
+    @Override
+    protected void onDestroy() {
+        soundPool.stop(notifySound);
+        soundPool.stop(singleSound);
+        soundPool.stop(finishSound);
+        soundPool.release();
+        soundPool = null;
+        super.onDestroy();
+    }
+
     /**
      * 初始化数据
      */
@@ -253,6 +263,7 @@ public class TrainingBaseActivity extends Activity {
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        soundPool.stop(notifySound);
                         dialog.dismiss();
                         finish();
                     }
