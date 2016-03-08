@@ -18,6 +18,7 @@ import java.util.Calendar;
 public class AlarmReceiver extends BroadcastReceiver {
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
+    private final int REQUEST_CODE = 12345;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -33,9 +34,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void setAlarm(Context context) {
         alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent mIntent = new Intent(context, AlarmReceiver.class);
-        if (PendingIntent.getBroadcast(context, 0, mIntent, PendingIntent.FLAG_NO_CREATE) == null) {
+        if (PendingIntent.getBroadcast(context, REQUEST_CODE, mIntent, PendingIntent.FLAG_NO_CREATE) == null) {
             Log.e("fitmanager", "set alarm");
-            alarmIntent = PendingIntent.getBroadcast(context, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmIntent = PendingIntent.getBroadcast(context, REQUEST_CODE, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             // Set the alarm's trigger time to 9:00 p.m.

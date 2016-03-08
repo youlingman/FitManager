@@ -1,22 +1,22 @@
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cyl.fitmanager"
     android:versionCode="1"
     android:versionName="1.0">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".Appcontext.MainApplication"
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,43 +26,42 @@
         <activity
             android:name=".Activity.SquatsMainActivity"
             android:label="SquatsMainActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:screenOrientation="landscape">
-        </activity>
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
         <activity
             android:name=".Activity.PushUpMainActivity"
             android:label="PushUpMainActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
         <activity
             android:name=".Activity.SitUpMainActivity"
             android:label="SitUpMainActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:screenOrientation="landscape">
-        </activity>
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
         <activity
             android:name=".Activity.ProgramMainActivity"
             android:label="ProgramMainActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
-        <service android:name=".Service.NotifyService"
+        <service
+            android:name=".Service.NotifyService"
             android:enabled="true"
             android:exported="true"
-            android:process=":notify" >
-        </service>
+            android:process=":notify" />
 
-        <receiver android:name=".Receiver.BootReceiver">
+        <receiver
+            android:name=".Receiver.BootReceiver"
+            android:process=":boot">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".Receiver.AlarmReceiver">
-        </receiver>
+        <receiver
+            android:name=".Receiver.AlarmReceiver"
+            android:process=":alarm"/>
     </application>
 
 </manifest>

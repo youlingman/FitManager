@@ -263,7 +263,6 @@ public class TrainingBaseActivity extends Activity {
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        soundPool.stop(notifySound);
                         dialog.dismiss();
                         finish();
                     }

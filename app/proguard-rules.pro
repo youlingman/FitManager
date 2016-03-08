@@ -15,3 +15,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn com.alibaba.fastjson.**
+-keep class com.alibaba.fastjson.** { *; }
+-dontwarn com.esotericsoftware.**
+-keep class com.esotericsoftware.** { *; }
+-dontwarn org.objenesis.**
+-keep class org.objenesis.** { *; }
+-dontwarn com.github.mikephil.charting.**
+-keep class com.github.mikephil.charting.** { *; }
+-dontwarn com.snappydb.**
+-keep class com.snappydb.** { *; }
+
