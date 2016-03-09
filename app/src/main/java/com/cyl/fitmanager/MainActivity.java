@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainApplication) getApplication()).initDB();
         ((MainApplication) getApplication()).updateTrainingDay();
         alarm.setAlarm(this);
         setContentView(R.layout.activity_main);

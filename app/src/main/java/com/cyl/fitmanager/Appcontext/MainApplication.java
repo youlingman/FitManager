@@ -29,12 +29,15 @@ public class MainApplication extends Application {
     public void onCreate() {
         Log.e("fitmanager", "oncreate application for " + this);
         super.onCreate();
+        sp = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
+    }
+
+    public void initDB() {
         try {
             snappyDb = DBFactory.open(this);
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
-        sp = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
     }
 
     public DB getDB() {

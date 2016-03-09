@@ -100,6 +100,7 @@ public class ProgramMainActivity extends Activity {
         // 获取训练月份数组数据
         try {
             trainingMonths = ((MainApplication) getApplication()).getDB().get("training_months", TreeSet.class);
+            if(null == trainingMonths) trainingMonths = new TreeSet<>();
             if (!trainingMonths.contains(trainingMonthDate)) {
                 trainingMonths.add(trainingMonthDate);
             }
@@ -261,11 +262,13 @@ public class ProgramMainActivity extends Activity {
             date = cal.getTime();
             xValues.add("" + i);
             int value = 0;
+            // date月第i天自由模式训练量
             try {
                 value = ((MainApplication) getApplication()).getDB().getInt(program + "_free_count_" + parseDateInDay(date));
             } catch (SnappydbException e) {
                 // not found
             }
+            // date月第i天计划模式训练量
             try {
                 value += ((MainApplication) getApplication()).getDB().getInt(program + "_program_count_" + parseDateInDay(date));
             } catch (SnappydbException e) {
@@ -273,13 +276,15 @@ public class ProgramMainActivity extends Activity {
             }
             counts += value;
             yValues.add(new BarEntry(value, i));
-            cal.add(Calendar.DATE, 1);
             if (value != 0) day_count++;
+            // date月第i天训练时长
             try {
                 seconds += ((MainApplication) getApplication()).getDB().getLong(program + "_seconds_" + parseDateInDay(date));
             } catch (SnappydbException e) {
 //                e.printStackTrace();
             }
+            // 往后推一天
+            cal.add(Calendar.DATE, 1);
             // 只展示date对应月内的数据
             if (cal.get(Calendar.MONTH) != month) break;
         }
@@ -305,12 +310,12 @@ public class ProgramMainActivity extends Activity {
      * 根据训练日期的月份刷新图表轮转按钮和展示数据
      */
     void refreshChart() {
-        if (trainingMonths.lower(trainingMonthDate) != null) {
+        if (null != trainingMonths.lower(trainingMonthDate)) {
             btn_previous_month.setVisibility(View.VISIBLE);
         } else {
             btn_previous_month.setVisibility(View.GONE);
         }
-        if (trainingMonths.higher(trainingMonthDate) != null) {
+        if (null != trainingMonths.higher(trainingMonthDate)) {
             btn_forward_month.setVisibility(View.VISIBLE);
         } else {
             btn_forward_month.setVisibility(View.GONE);
@@ -356,9 +361,9 @@ public class ProgramMainActivity extends Activity {
     class TipDialog extends Dialog {
         Context mContext;
         Intent mIntent;
-        TextView tv_tips;
-        Button bt_continue;
-        CheckBox cb_showTip;
+        TextView tvTips;
+        Button btContinue;
+        CheckBox cbShowTip;
 
         public TipDialog(Context context, int theme, Intent intent) {
             super(context, theme);
@@ -372,14 +377,14 @@ public class ProgramMainActivity extends Activity {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.dialog_training_tip, null);
             setContentView(view);
-            tv_tips = (TextView) findViewById(R.id.tip_text);
-            bt_continue = (Button) findViewById(R.id.continue_button);
-            cb_showTip = (CheckBox) findViewById(R.id.no_show_checkbox);
-            tv_tips.setText(Constant.PROGRAM_TIP.get(program));
-            bt_continue.setOnClickListener(new View.OnClickListener() {
+            tvTips = (TextView) findViewById(R.id.tip_text);
+            btContinue = (Button) findViewById(R.id.continue_button);
+            cbShowTip = (CheckBox) findViewById(R.id.no_show_checkbox);
+            tvTips.setText(Constant.PROGRAM_TIP.get(program));
+            btContinue.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainApplication) getApplication()).getSP().edit().putBoolean(program + "_no_tip", cb_showTip.isChecked()).commit();
+                    ((MainApplication) getApplication()).getSP().edit().putBoolean(program + "_no_tip", cbShowTip.isChecked()).commit();
                     startActivity(mIntent);
                     dismiss();
                 }
@@ -397,12 +402,12 @@ public class ProgramMainActivity extends Activity {
      */
     class ProgramEditDialog extends Dialog {
         Context mContext;
-        NumberPicker np_group_size;
-        NumberPicker np_group_count;
-        NumberPicker np_group_interval;
-        ArrayList<String> group_size_data;
-        ArrayList<String> group_count_data;
-        ArrayList<String> group_interval_data;
+        NumberPicker npGroupSize;
+        NumberPicker npGroupCount;
+        NumberPicker npGroupInterval;
+        ArrayList<String> groupSizeData;
+        ArrayList<String> groupCountData;
+        ArrayList<String> groupIntervalData;
 
         public ProgramEditDialog(Context context, int theme) {
             super(context, theme);
@@ -412,25 +417,24 @@ public class ProgramMainActivity extends Activity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            // TODO 增加三个滑动选择控件和确定按钮，按钮绑定点击更新训练计划和dismiss对话框的逻辑
+            // TODO 增加三个滑动选择控件，各自对应训练参数
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.dialog_edit_program, null);
             setContentView(view);
             // 设置显示数据对应数组
-            group_size_data = genArrayList(1, 1, 10);
-            group_count_data = genArrayList(10, 5, 11);
-            group_interval_data = genArrayList(10, 10, 18);
+            groupSizeData = genArrayList(1, 1, 10);
+            groupCountData = genArrayList(10, 5, 11);
+            groupIntervalData = genArrayList(10, 10, 18);
             // 获取picker
-            np_group_count = (NumberPicker) findViewById(R.id.group_count_picker);
-            np_group_size = (NumberPicker) findViewById(R.id.group_size_picker);
-            np_group_interval = (NumberPicker) findViewById(R.id.group_interval_picker);
-            setNumberPiker(np_group_count, tv_group_count, group_count_data);
-            setNumberPiker(np_group_size, tv_group_size, group_size_data);
-            setNumberPiker(np_group_interval, tv_group_interval, group_interval_data);
+            npGroupCount = (NumberPicker) findViewById(R.id.group_count_picker);
+            npGroupSize = (NumberPicker) findViewById(R.id.group_size_picker);
+            npGroupInterval = (NumberPicker) findViewById(R.id.group_interval_picker);
+            setNumberPiker(npGroupCount, tv_group_count, groupCountData);
+            setNumberPiker(npGroupSize, tv_group_size, groupSizeData);
+            setNumberPiker(npGroupInterval, tv_group_interval, groupIntervalData);
         }
 
         private void setNumberPiker(NumberPicker np, final TextView tv, final ArrayList<String> data) {
-//            np.setWrapSelectorWheel(true);
             np.setMinValue(0);
             np.setMaxValue(data.size() - 1);
             np.setDisplayedValues(data.toArray(new String[data.size()]));
