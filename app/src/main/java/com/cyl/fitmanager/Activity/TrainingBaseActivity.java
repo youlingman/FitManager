@@ -237,7 +237,7 @@ public class TrainingBaseActivity extends Activity {
             e.printStackTrace();
         }
         // 更新上一训练日
-        ((MainApplication) getApplication()).getSP().edit().putString("last_training_day_" + program, today);
+        ((MainApplication) getApplication()).getSP().edit().putString("last_training_day_" + program, today).commit();
         // todo 弹一个对话框，展示本次训练完成情况，包括完成次数和所用时间
         new AlertDialog.Builder(this).
                 setTitle("本次训练").
