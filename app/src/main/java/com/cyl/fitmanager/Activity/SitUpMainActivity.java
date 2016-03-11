@@ -45,7 +45,7 @@ public class SitUpMainActivity extends TrainingBaseActivity implements SensorEve
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (UNAVAILABLE == trainingState) {
+        if (State.UNAVAILABLE == trainingState) {
             return;
         }
         Sensor sensor = event.sensor;
@@ -61,9 +61,9 @@ public class SitUpMainActivity extends TrainingBaseActivity implements SensorEve
         values[1] = (float) Math.toDegrees(values[1]);
         values[2] = (float) Math.toDegrees(values[2]);
         if (values[2] <= -120 || values[2] > 120) {
-            trainingState = DOWN;
-        } else if (values[2] >= -90 && values[2] <= 0 && DOWN == trainingState) {
-            trainingState = UP;
+            trainingState = State.DOWN;
+        } else if (values[2] >= -90 && values[2] <= 0 && State.DOWN == trainingState) {
+            trainingState = State.UP;
             onSingleFinish();
         }
         if (count == 0) {

@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * 利用距离传感器识别俯卧撑训练动作
@@ -38,17 +39,18 @@ public class PushUpMainActivity extends TrainingBaseActivity implements SensorEv
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (UNAVAILABLE == trainingState) {
+        if (State.UNAVAILABLE == trainingState) {
             return;
         }
         Sensor sensor = event.sensor;
         if (sensor.getType() == Sensor.TYPE_PROXIMITY) {
             float distance = event.values[0];
-            if (distance <= DOWN_THRESHOLE && UP == trainingState) {
-                trainingState = DOWN;
+            Log.e("cyl", "distance:" + distance + " state:" + trainingState);
+            if (distance <= DOWN_THRESHOLE && State.DOWN != trainingState) {
+                trainingState = State.DOWN;
                 onSingleFinish();
             } else if (distance > UP_THRESHOLE) {
-                trainingState = UP;
+                trainingState = State.UP;
             }
         }
         if (count == 0) {

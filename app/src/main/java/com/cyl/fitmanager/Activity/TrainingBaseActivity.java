@@ -59,8 +59,10 @@ public class TrainingBaseActivity extends Activity {
     int count;
     int finishedCount = 0;
     int currentGroup = 0;
-    int trainingState;
-    final int UNAVAILABLE = 0, INIT = 1, DOWN = 2, UP = 3;
+    State trainingState;
+    enum State {
+        UNAVAILABLE, INIT, DOWN, UP
+    }
     GroupProp groupProp;
 
     /**
@@ -196,7 +198,7 @@ public class TrainingBaseActivity extends Activity {
      * 响应完成当前训练计划事件，记录测试数据
      */
     void onTrainingFinish() {
-        if (trainingState == UNAVAILABLE) {
+        if (trainingState == State.UNAVAILABLE) {
             finish();
             return;
         }
@@ -256,8 +258,8 @@ public class TrainingBaseActivity extends Activity {
      * 响应放弃当前训练事件
      */
     void onTrainingQuit() {
-        final int previousState = trainingState;
-        trainingState = UNAVAILABLE;
+        final State previousState = trainingState;
+        trainingState = State.UNAVAILABLE;
         new AlertDialog.Builder(TrainingBaseActivity.this)
                 .setMessage("是否退出训练？将丢失当前训练进度。")
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -378,7 +380,7 @@ public class TrainingBaseActivity extends Activity {
      */
     protected void countDown(long time) {
         final myCountDownTimer timer = new myCountDownTimer(time * 1000 + 200, 1, null);
-        trainingState = UNAVAILABLE;
+        trainingState = State.UNAVAILABLE;
         onTimerPageShow();
         if (currentGroup != 0) {
             bt_reset_timer.setOnClickListener(new View.OnClickListener() {
@@ -432,11 +434,11 @@ public class TrainingBaseActivity extends Activity {
                 nextTimer.start();
             } else if (style.equals(getString(R.string.free_style))) {
                 count = 0;
-                trainingState = INIT;
+                trainingState = State.INIT;
                 onFreeStylePageShow(getString(R.string.finished));
             } else if (style.equals(getString(R.string.program_style))) {
                 count = groupProp.count;
-                trainingState = INIT;
+                trainingState = State.INIT;
                 onProgramStylePageShow();
             }
         }
