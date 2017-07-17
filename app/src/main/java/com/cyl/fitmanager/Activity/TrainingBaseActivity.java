@@ -20,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cyl.fitmanager.Appcontext.MainApplication;
+import com.cyl.fitmanager.Controller.DataController;
+import com.cyl.fitmanager.Controller.ProgramConfigController;
+import com.cyl.fitmanager.Model.ProgramContext;
 import com.cyl.fitmanager.R;
-import com.cyl.fitmanager.Data.GroupProp;
+import com.cyl.fitmanager.Model.GroupProp;
 import com.snappydb.SnappydbException;
 
 import java.util.ArrayList;
@@ -208,7 +210,7 @@ public class TrainingBaseActivity extends Activity {
         long seconds = (date.getTime() - startDate.getTime()) / 1000;
         long current_seconds;
         try {
-            current_seconds = ((MainApplication) getApplication()).getDB().getLong(program + "_seconds_" + today);
+            current_seconds = DataController.getInstance().getDB().getLong(program + "_seconds_" + today);
         } catch (SnappydbException e) {
             // not found in db
             current_seconds = 0;
@@ -216,14 +218,14 @@ public class TrainingBaseActivity extends Activity {
 //        Log.e("write seconds", program + "_seconds_" + today + ": " + (current_seconds + seconds));
         try {
             if ((current_seconds + seconds) != 0)
-                ((MainApplication) getApplication()).getDB().putLong(program + "_seconds_" + today, current_seconds + seconds);
+                DataController.getInstance().getDB().putLong(program + "_seconds_" + today, current_seconds + seconds);
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
         // 更新训练统计
         int current_count;
         try {
-            current_count = ((MainApplication) getApplication()).getDB().getInt(program + "_free_count_" + today);
+            current_count = DataController.getInstance().getDB().getInt(program + "_free_count_" + today);
         } catch (SnappydbException e) {
             // not found in db
             current_count = 0;
@@ -232,14 +234,14 @@ public class TrainingBaseActivity extends Activity {
         Log.e("write count", program + "_free_count_" + today + ": " + count + current_count);
         try {
             if (finishedCount != 0)
-                ((MainApplication) getApplication()).getDB().putInt(program + "_program_count_" + today, finishedCount);
+                DataController.getInstance().getDB().putInt(program + "_program_count_" + today, finishedCount);
             if (count != 0)
-                ((MainApplication) getApplication()).getDB().putInt(program + "_free_count_" + today, count + current_count);
+                DataController.getInstance().getDB().putInt(program + "_free_count_" + today, count + current_count);
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
         // 更新上一训练日
-        ((MainApplication) getApplication()).getSP().edit().putString("last_training_day_" + program, today).commit();
+        ProgramContext.getInstance().getConfig().setLastTrainingDay(today);
         // todo 弹一个对话框，展示本次训练完成情况，包括完成次数和所用时间
         new AlertDialog.Builder(this).
                 setTitle("本次训练").

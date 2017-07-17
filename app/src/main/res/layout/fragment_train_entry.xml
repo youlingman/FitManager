@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".TrainEntryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightgray"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/transparent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/program_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_normal_selector"
+                android:text="@string/program_style" />
+
+            <Button
+                android:id="@+id/free_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_normal_selector"
+                android:text="@string/free_style" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next_training_day"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/next_training_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

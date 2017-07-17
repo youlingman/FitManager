@@ -1,6 +1,11 @@
 package com.cyl.fitmanager;
 
 import android.content.Context;
+import android.util.Log;
+
+import com.cyl.fitmanager.Controller.DataController;
+import com.cyl.fitmanager.Controller.ProgramConfigController;
+import com.cyl.fitmanager.Model.GroupProp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -134,5 +139,58 @@ public class Utils {
             num += step;
         }
         return array;
+    }
+
+    /**
+     * 更新给定项目的下一训练日
+     * @param program
+     * @return
+     */
+    public static String updateTrainingDay(String program) {
+        ProgramConfigController programConfigController = ProgramConfigController.getInstance(program);
+        try {
+            GroupProp gp = programConfigController.getProp();
+            if (null == gp) gp = new GroupProp();
+            Calendar cal = Calendar.getInstance();
+            Date c_date = new Date();
+            cal.setTime(c_date);
+            for (int i = 0; i <= 7; i++) {
+                int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                int trainingBit = gp.trainingDayBitMap & (0x1 << dayOfWeek);
+                if (trainingBit != 0) {
+                    if (i != 0 || !parseDateInDay(c_date).equals(programConfigController.getLastTrainingDay())) return parseDateInDay(c_date);
+                }
+                cal.add(Calendar.DATE, 1);
+                c_date = cal.getTime();
+            }
+            return "-";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "-";
+        }
+    }
+
+    /**
+     * 更新每个项目和总体对应的下一训练日
+     */
+    public static void updateTrainingDay() {
+        DataController dataController = DataController.getInstance();
+        try {
+            String training_day = "-";
+            for (int i = 0; i < Constant.PROGRAMS.length; i++) {
+                String program = Constant.PROGRAMS[i];
+                String program_training_day = updateTrainingDay(program);
+                ProgramConfigController.getInstance(program).setNextTrainingDay(program_training_day);
+                Log.e("cyl", "next_training_day_" + program + " : " + program_training_day);
+                if (training_day.equals("-")) training_day = program_training_day;
+                else if (!training_day.equals("-") && !program_training_day.equals("-") && training_day.compareTo(program_training_day) > 0) {
+                    training_day = program_training_day;
+                }
+            }
+            Log.e("cyl", "next_training_day" + " : " + training_day);
+            dataController.getSP().edit().putString("next_training_day", training_day).commit();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

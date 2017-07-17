@@ -13,15 +13,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cyl.fitmanager.Appcontext.MainApplication;
 import com.cyl.fitmanager.Activity.ProgramMainActivity;
-import com.cyl.fitmanager.Data.GroupProp;
+import com.cyl.fitmanager.Controller.ProgramConfigController;
+import com.cyl.fitmanager.Model.GroupProp;
+import com.cyl.fitmanager.Model.ProgramContext;
 import com.cyl.fitmanager.Receiver.AlarmReceiver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.cyl.fitmanager.Utils.parseDateInDay;
 
@@ -31,15 +35,12 @@ import static com.cyl.fitmanager.Utils.parseDateInDay;
  */
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
-    private ListView lvEntry;
     private AlarmReceiver alarm = new AlarmReceiver();
     private EntryListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainApplication) getApplication()).initDB();
-        ((MainApplication) getApplication()).updateTrainingDay();
         alarm.setAlarm(this);
         setContentView(R.layout.activity_main);
         initData();
@@ -57,23 +58,28 @@ public class MainActivity extends Activity {
      */
     private void initData() {
         for (String program : Constant.PROGRAMS) {
-            GroupProp gp = ((MainApplication) getApplication()).getObjInSp(program + "_group", GroupProp.class);
-            if (null == gp) {
-                gp = new GroupProp();
-                ((MainApplication) getApplication()).putObjInSp(program + "_group", gp);
+            ProgramConfigController programConfigController = ProgramConfigController.getInstance(program);
+            if (null == programConfigController.getProp()) {
+                programConfigController.setProp(new GroupProp());
             }
         }
+        Utils.updateTrainingDay();
         adapter = new EntryListAdapter();
     }
 
     private void initListView() {
-        lvEntry = (ListView) findViewById(R.id.entry_list);
-        lvEntry.setAdapter(adapter);
+        ((ListView) findViewById(R.id.entry_list)).setAdapter(adapter);
     }
 
-    private static class ViewHolder {
-        public TextView tv_entry = null;
-        public LinearLayout ll_entry = null;
+    static class ViewHolder {
+        @BindView(R.id.entry_text)
+        public TextView tv_entry;
+        @BindView(R.id.entry_background)
+        public LinearLayout ll_entry;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
     private class EntryListAdapter extends BaseAdapter {
@@ -104,15 +110,13 @@ public class MainActivity extends Activity {
             ViewHolder holder;
             if (null == convertView) {
                 convertView = getLayoutInflater().inflate(R.layout.listitem_main, null);
-                holder = new ViewHolder();
-                holder.tv_entry = (TextView) convertView.findViewById(R.id.entry_text);
-                holder.ll_entry = (LinearLayout) convertView.findViewById(R.id.entry_background);
+                holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             holder.tv_entry.setText(program);
-            if (((MainApplication) getApplication()).updateTrainingDay(program).equals(parseDateInDay(new Date()))) {
+            if (Utils.updateTrainingDay(program).equals(parseDateInDay(new Date()))) {
                 holder.ll_entry.setBackgroundResource(R.drawable.listitem_main_unfinished_selector);
                 Animation alphaAnimation=new AlphaAnimation(1, (float) 0.6);
                 alphaAnimation.setRepeatCount(Animation.INFINITE);
@@ -127,10 +131,8 @@ public class MainActivity extends Activity {
             holder.ll_entry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("program", program);
+                    ProgramContext.setProgram(program);
                     Intent intent = new Intent(MainActivity.this, ProgramMainActivity.class);
-                    intent.putExtras(bundle);
                     // 深蹲施工中
                     if (position != 0) {
                         startActivity(intent);

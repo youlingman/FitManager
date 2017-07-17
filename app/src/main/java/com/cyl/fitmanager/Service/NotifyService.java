@@ -12,6 +12,7 @@ import android.util.Log;
 import com.cyl.fitmanager.Appcontext.MainApplication;
 import com.cyl.fitmanager.MainActivity;
 import com.cyl.fitmanager.R;
+import com.cyl.fitmanager.Utils;
 
 import java.util.Date;
 
@@ -48,7 +49,7 @@ public class NotifyService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        ((MainApplication)getApplication()).updateTrainingDay();
+        Utils.updateTrainingDay();
         String next_training = sp.getString("next_training_day", "-");
         if(next_training.equals(parseDateInDay(new Date()))) {
 //            Log.e("fitmanager", "pop notification");

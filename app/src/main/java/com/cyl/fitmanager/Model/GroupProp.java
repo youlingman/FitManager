@@ -1,4 +1,4 @@
-package com.cyl.fitmanager.Data;
+package com.cyl.fitmanager.Model;
 
 /**
  * 对训练计划数据的封装
